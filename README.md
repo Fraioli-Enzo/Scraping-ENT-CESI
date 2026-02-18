@@ -76,7 +76,3 @@ Les paramètres suivants peuvent être modifiés dans `main.py` :
 - `NB_SEMAINES` : nombre de semaines à récupérer (par défaut : 4)
 - `DELAI_ENTRE_SEMAINES_SECONDES` : délai entre chaque semaine durant le scraping (par défaut : 2)
 - `TZ` : fuseau horaire (par défaut : Europe/Paris)
-
-## Sécurité
-
-⚠️ **Important** : Ne commitez jamais le fichier `.env` sur Git ! Il est déjà dans `.gitignore`.
