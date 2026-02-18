@@ -1,0 +1,12 @@
+services:
+  scrapper-ent:
+    build: .
+    image: scrapper-ent:latest
+    environment:
+      IDENTIFIANT: ${IDENTIFIANT}
+      MOT_DE_PASSE: ${MOT_DE_PASSE}
+    volumes:
+      - ./:/app
+    # Pour la désactivation du sandboxing si besoin:
+    # cap_add:
+    #   - SYS_ADMIN
