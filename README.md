@@ -1,4 +1,4 @@
-# Scrapper ENT CESI
+# Scraper ENT CESI
 
 Script d'extraction de l'emploi du temps depuis l'ENT CESI avec export en format ICS.
 
