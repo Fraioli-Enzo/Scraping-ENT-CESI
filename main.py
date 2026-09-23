@@ -234,12 +234,30 @@ def main():
         champ_login = wait.until(EC.presence_of_element_located((By.ID, "login")))
         champ_login.clear()
         champ_login.send_keys(IDENTIFIANT)
-        wait.until(EC.element_to_be_clickable((By.ID, "submit"))).click()
+        wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, "button.submit"))).click()
+        print(f"URL après Valider: {driver.current_url}")
+        try:
+            wait.until(lambda d: d.find_elements(By.ID, "passwordInput") or d.find_elements(By.ID, "PASSWORD"))
+        except Exception:
+            for txt in driver.find_element(By.TAG_NAME, "body").text.splitlines():
+                if re.search(r"erreur|error|incorrect|invalide", txt, re.IGNORECASE):
+                    raise ValueError(f"Login bloqué, url={driver.current_url}: {txt.strip()}")
+            raise ValueError(f"Page inconnue après WAYF, url={driver.current_url}")
 
-        champ_password = wait.until(EC.presence_of_element_located((By.ID, "passwordInput")))
-        champ_password.clear()
-        champ_password.send_keys(MOT_DE_PASSE)
-        wait.until(EC.element_to_be_clickable((By.ID, "submitButton"))).click()
+        if driver.find_elements(By.ID, "passwordInput"):
+            champ_password = wait.until(EC.presence_of_element_located((By.ID, "passwordInput")))
+            champ_password.clear()
+            champ_password.send_keys(MOT_DE_PASSE)
+            try:
+                wait.until(EC.element_to_be_clickable((By.ID, "submitButton"))).click()
+            except Exception:
+                driver.execute_script("arguments[0].click();", driver.find_element(By.ID, "submitButton"))
+            wait.until(lambda d: "sts.viacesi.fr" not in d.current_url)
+        else:
+            champ_password = wait.until(EC.presence_of_element_located((By.ID, "PASSWORD")))
+            champ_password.clear()
+            champ_password.send_keys(MOT_DE_PASSE)
+            wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, "input.submit[name='VALIDER']"))).click()
 
         wait.until(EC.url_contains("ent.cesi.fr"))
 
